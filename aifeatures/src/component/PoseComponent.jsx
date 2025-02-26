@@ -1,39 +1,33 @@
-import React, { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 
-const PoseComponent = () => {
-  const [poseData, setPoseData] = useState({ pushups: 0, squats: 0, feedback: "Waiting for feedback..." });
+export default function ExerciseTracker() {
+  const [exercise, setExercise] = useState("pushups");
+  const [videoUrl, setVideoUrl] = useState("http://localhost:5000/video_feed");
 
   useEffect(() => {
-    const fetchData = () => {
-      axios.get("http://127.0.0.1:5000/pose")
-        .then(response => setPoseData(response.data))
-        .catch(error => console.error("Error fetching pose data:", error));
-    };
-
-    fetchData(); // Fetch once on mount
-    const interval = setInterval(fetchData, 20000); // Fetch every 20s
-
-    return () => clearInterval(interval);
-  }, []);
+    axios.post("http://localhost:5000/set_exercise", { exercise }).catch((err) => {
+      console.error("Error setting exercise:", err);
+    });
+  }, [exercise]);
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-900 text-white p-6">
-      <h2 className="text-3xl font-bold mb-4">AI-Powered Exercise Tracker</h2>
-      
-      <img
-        src="http://127.0.0.1:5000/video_feed"
-        alt="Live Camera Feed"
-        className="w-96 h-72 rounded-lg shadow-lg border-2 border-green-500"
-      />
-
-      <div className="bg-gray-800 p-6 rounded-lg shadow-lg w-80 mt-4">
-        <p className="text-lg">🔥 Push-ups: <span className="text-green-400">{poseData.pushups}</span></p>
-        <p className="text-lg">🏋️ Squats: <span className="text-blue-400">{poseData.squats}</span></p>
-        <p className="text-yellow-400 font-semibold mt-4">💬 Feedback: {poseData.feedback}</p>
+    <div className="flex flex-col items-center p-6 bg-gray-900 min-h-screen text-white">
+      <h1 className="text-3xl font-bold mb-4">AI-Powered Exercise Tracker</h1>
+      <div className="mb-4">
+        <label className="mr-4">Select Exercise:</label>
+        <select
+          value={exercise}
+          onChange={(e) => setExercise(e.target.value)}
+          className="p-2 bg-gray-800 border border-gray-600 rounded"
+        >
+          <option value="pushups">Push-Ups</option>
+          <option value="squats">Squats</option>
+        </select>
+      </div>
+      <div className="w-full flex justify-center">
+        <img src={videoUrl} alt="Exercise Stream" className="border-4 border-green-500 rounded-lg" />
       </div>
     </div>
   );
-};
-
-export default PoseComponent;
+}
