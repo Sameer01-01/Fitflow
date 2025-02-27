@@ -14,7 +14,7 @@ const DietPlanForm = () => {
   const [formValid, setFormValid] = useState(false);
   const [activeTab, setActiveTab] = useState(0);
 
-  // Validate form at each step
+  
   useEffect(() => {
     switch (step) {
       case 1:
@@ -53,21 +53,21 @@ const DietPlanForm = () => {
     return (weight / (heightInMeters * heightInMeters)).toFixed(2);
   };
 
-  // Function to parse markdown string into separate diet plans
+  
   const parseDietPlans = (markdownText) => {
-    // Split by main headings (## Diet Plan)
+    
     const plans = markdownText.split(/^## Diet Plan \d+/m).filter(plan => plan.trim());
     
-    // If we don't have exactly 3 plans, try another parsing approach
+   
     if (plans.length !== 3) {
-      // Try splitting by any level-2 headings
+      
       const altPlans = markdownText.split(/^## /m).filter(plan => plan.trim());
       
-      // Process each plan to add the heading back
+      
       return altPlans.slice(0, 3).map(plan => `## ${plan}`);
     }
     
-    // Add the headings back to each plan
+    
     return plans.map((plan, index) => `## Diet Plan ${index + 1}${plan}`);
   };
 
@@ -152,15 +152,15 @@ const DietPlanForm = () => {
     </div>
   );
 
-  // Diet Plan Card Component with improved design
+  
   const DietPlanCard = ({ content, index }) => {
     const planNumber = index + 1;
     const isActive = activeTab === index;
     
-    // Extract title from content
+    
     const title = content.match(/## (.*?)(?:\n|$)/)?.[1] || `Diet Plan ${planNumber}`;
     
-    // Only render the card if it's the active one
+    
     if (!isActive) return null;
     
     return (
@@ -174,7 +174,7 @@ const DietPlanForm = () => {
     );
   };
 
-  // Render plan tabs for selection
+  
   const renderPlanTabs = () => (
     <div className="flex flex-wrap mb-6 sticky top-0 bg-white z-10 p-2 rounded-lg shadow-md">
       {dietPlans.map((plan, index) => (
@@ -277,7 +277,7 @@ const DietPlanForm = () => {
                   </div>
                   
                   <div className="max-h-96 overflow-y-auto pr-2 custom-scrollbar">
-                    {/* Only one plan will be visible at a time */}
+                    
                     {dietPlans.map((plan, index) => (
                       <DietPlanCard key={index} content={plan} index={index} />
                     ))}
@@ -383,7 +383,7 @@ const DietPlanForm = () => {
         </div>
       </div>
       
-      {/* Add custom stylesheet for scrollbar and animations */}
+      
       <style jsx global>{`
         .custom-scrollbar::-webkit-scrollbar {
           width: 8px;
