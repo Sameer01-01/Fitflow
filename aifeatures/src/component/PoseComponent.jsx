@@ -1,16 +1,13 @@
 import { useState, useEffect } from "react";
-
 const App = () => {
   const [exercise, setExercise] = useState("pushups");
   const [count, setCount] = useState(0);
-
   useEffect(() => {
     const video = document.getElementById("videoFeed");
     if (video) {
-      video.src = "http://localhost:5000/video_feed";
+      video.src = "http://localhost:5000/video_feed"; 
     }
   }, []);
-
   const changeExercise = async (type) => {
     setExercise(type);
     await fetch("http://localhost:5000/set_exercise", {
@@ -19,12 +16,10 @@ const App = () => {
       body: JSON.stringify({ exercise: type }),
     });
   };
-
   const resetCount = async () => {
     await fetch("http://localhost:5000/reset_count", { method: "POST" });
     setCount(0);
   };
-
   return (
     <div className="flex flex-col items-center p-4 bg-gray-900 min-h-screen text-white">
       <h1 className="text-2xl font-bold mb-4">AI Exercise Tracker</h1>

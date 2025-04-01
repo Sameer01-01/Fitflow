@@ -6,9 +6,7 @@ import Events from './component/Events'
 const App = () => {
   return (
     <>
-    <Events/>
-    
-    
+    <PoseComponent/>
     </>
   )
 }
